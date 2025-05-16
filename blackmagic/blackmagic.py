@@ -68,8 +68,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     for filename in args.filenames:
         sanitize_file(filename)
 
+    
     black_cmd = ["black", *args.filenames, *unknown_args]
+    import sys
+    print(sys.path)
+    print("black cmd", black_cmd)
     black_exit = run(black_cmd)
+    print("black exit", black_exit)
 
     for filename in args.filenames:
         restore_file(Path(filename))
