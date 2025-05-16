@@ -73,13 +73,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     import sys
     print(sys.path)
     print("black cmd", black_cmd)
-    black_exit = run(black_cmd)
-    print("black exit", black_exit)
+    black_result = subprocess.run(black_cmd, check=False, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    print("black output:", black_result.stdout)
+    print("black exit", black_result)
 
     for filename in args.filenames:
         restore_file(Path(filename))
 
-    return black_exit
+    return black_result.returncode
 
 
 if __name__ == '__main__':
