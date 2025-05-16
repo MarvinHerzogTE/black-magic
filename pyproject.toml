@@ -1,0 +1,10 @@
+[project]
+name = "blackmagic"
+version = "0.1.0"
+description = "Pre-commit hook to sanitize and restore magic commands for Black"
+requires-python = ">=3.8"
+dependencies = []
+
+[project.scripts]
+blackmagic-sanitize = "blackmagic.magic_filter:main"
+blackmagic-restore = "blackmagic.magic_filter:main"
