@@ -16,19 +16,9 @@ Firstly `blackmagic-sanitize` is run to make .py backups, comment out the magic 
 ```{yaml}
 repos:
   - repo: https://github.com/MarvinHerzogTE/black-magic
-    rev: v0.1.0
+    rev: 0.1.6
     hooks:
-      - id: blackmagic-sanitize
-
-  - repo: https://github.com/psf/black
-    rev: 24.3.0
-    hooks:
-      - id: black
-        language_version: python3.11
-        args: [--line-length=120]
-
-  - repo: https://github.com/MarvinHerzogTE/black-magic
-    rev: v0.1.0
-    hooks:
-      - id: blackmagic-restore
+      - id: blackmagic
+        # All black arguments are valid
+        args: [--line-length=120, --diff]
 ```
