@@ -8,4 +8,4 @@ dependencies = [
 ]
 
 [project.scripts]
-blackmagic = "blackmagic.runner:main"
+blackmagic = "blackmagic.blackmagic:main"
