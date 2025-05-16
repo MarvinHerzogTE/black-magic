@@ -14,7 +14,7 @@
 
 
 - id: blackmagic
-  name: Black formatting (magic safe)
+  name: Black formatting (.py, magic safe)
   entry: blackmagic
   language: python
   types: [python]
