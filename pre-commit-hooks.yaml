@@ -1,0 +1,13 @@
+- id: blackmagic-sanitize
+  name: Blackmagic Sanitize
+  description: Comment out IPython magic lines that Black cannot handle
+  entry: blackmagic-sanitize
+  language: python
+  types: [python]
+
+- id: blackmagic-restore
+  name: Blackmagic Restore
+  description: Restore previously-commented IPython magic lines
+  entry: blackmagic-restore --restore
+  language: python
+  types: [python]
