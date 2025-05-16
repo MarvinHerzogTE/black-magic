@@ -2,18 +2,17 @@
 from __future__ import annotations
 
 import argparse
-import subprocess
-import sys
+import os
 import re
 from collections.abc import Sequence
 from pathlib import Path
 
+
+# Regex thatatches only magic commands
+# - (starts with optional whitespace then % or %%)
+# - immediately followed by a character (ignores legitimate python such as modulo operator)
 MAGIC_RE = re.compile(rb'^\s*%%?[a-zA-Z]')
 PLACEHOLDER = b'# MAGIC_PLACEHOLDER: '
-
-def run(cmd: list[str]) -> int:
-    print(f'Running: {" ".join(cmd)}')
-    return subprocess.run(cmd, check=False).returncode
 
 def sanitize_file(filename: str) -> None:
     path = Path(filename)
@@ -44,7 +43,9 @@ def restore_file(filename: Path) -> None:
 
     for line in lines:
         if line.lstrip().startswith(PLACEHOLDER):
-            restored_lines.append(line.replace(PLACEHOLDER, b'', 1))
+            # Replace only the matching placeholder lines
+            restored_line = line.replace(PLACEHOLDER, b'', 1)
+            restored_lines.append(restored_line)
             changed = True
         else:
             restored_lines.append(line)
@@ -54,28 +55,22 @@ def restore_file(filename: Path) -> None:
             f.writelines(restored_lines)
         print(f'Restored {path}')
 
+
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description='Sanitize IPython magics, run Black, then restore magics',
-        allow_abbrev=False,
-    )
+    parser = argparse.ArgumentParser(description='Comment or restore IPython magic lines')
+    parser.add_argument('--restore', action='store_true', help='Restore original files from .magic.bak backups')
     parser.add_argument('filenames', nargs='*', help='Files to process')
-    args, unknown_args = parser.parse_known_args(argv)
+    args = parser.parse_args(argv)
 
-    if not args.filenames:
-        return 0
-
+  
     for filename in args.filenames:
-        sanitize_file(filename)
-
-    black_cmd = ["black", *args.filenames, *unknown_args]
-    run(black_cmd)
-
-    for filename in args.filenames:
-        restore_file(Path(filename))
-
-    return 0
-
+        if args.restore:
+            restore_file(filename)
+        else:
+            sanitize_file(filename)
+       
+    # not a quality check, always pass
+    return 0 
 
 if __name__ == '__main__':
     raise SystemExit(main())
