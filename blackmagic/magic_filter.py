@@ -33,7 +33,8 @@ def sanitize_file(filename: str) -> None:
             f.writelines(new_lines)
         print(f'Sanitized {filename}')
 
-def restore_file(path: Path) -> None:
+def restore_file(filename: Path) -> None:
+    path = Path(filename)
     with path.open('rb') as f:
         lines = f.readlines()
 
