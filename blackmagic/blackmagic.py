@@ -71,7 +71,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     
     black_cmd = ["black", *args.filenames, *unknown_args]
     black_result = subprocess.run(black_cmd, check=False, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    print("black output:", black_result.stdout)
+    print(black_result.stdout)
  
 
     for filename in args.filenames:
